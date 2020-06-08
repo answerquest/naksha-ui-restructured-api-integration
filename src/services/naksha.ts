@@ -3,7 +3,7 @@ import cb from "colorbrewer";
 
 import { compiledMessage } from "../utils/basic";
 import { geohashToJSON, getDataBins, getZoomConfig } from "../utils/grid";
-import { parseGeoserverLayersXml } from "../utils/naksha";
+import { parseGeoserverLayersXml, parseBbox } from "../utils/naksha";
 
 export const axGetGeoserverLayers = async (
   {endpoint, workspace},
@@ -15,6 +15,7 @@ export const axGetGeoserverLayers = async (
       `${nakshaApiEndpoint}/layer/all`,
       { responseType: "json" }
     );
+    const selectedLayersIDs = selectedLayers.map(({ id }) => id);
     return  res.data.map((l, index) => {
       return {
         ...l,
@@ -26,6 +27,8 @@ export const axGetGeoserverLayers = async (
             `${endpoint}/gwc/service/tms/1.0.0/${workspace}:${l.layerTableName}@EPSG%3A900913@pbf/{z}/{x}/{y}.pbf`
           ]
         },
+        isAdded: selectedLayersIDs.includes(l.id)
+        // bbox: parseBbox(l),
       }
     })
   } catch (e) {
@@ -94,7 +97,7 @@ export const getGridLayerData = async (
       right: _ne.lng,
       precision
     });
-
+    
     const { data } = await axios.get(endpoint);
 
     const geojson = geohashToJSON(data, level);

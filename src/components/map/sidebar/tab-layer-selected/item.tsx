@@ -52,13 +52,13 @@ const Item = ({ layer, q }: ItemProps) => {
           fallbackSrc={FALLBACK_THUMB}
         />
         <Box h="4.5rem" style={fadeOverflow}>
-          <Tooltip label={layer.description}>
+          <Tooltip label={layer.layerDescription}>
             <div>
               <Text mb={1}>
-                <Highlight search={q || ""}>{layer.title}</Highlight>
+                <Highlight search={q || ""}>{layer.layerName}</Highlight>
               </Text>
               <Box fontSize="sm" color="gray.600">
-                {layer.description}
+                {layer.layerDescription}
               </Box>
             </div>
           </Tooltip>

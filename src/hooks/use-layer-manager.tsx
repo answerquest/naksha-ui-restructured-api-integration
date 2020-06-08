@@ -270,9 +270,14 @@ export default function useLayerManager() {
       if (!map.getSource(id)) {
         map.addSource(id, layer.source);
       }
+      console.log('styleList', styleList);
+      
       removeLayer(map, id);
       map.addLayer(styleList[styleIndex].colors);
-      updateToBBox(layer.bbox, updateBbox);
+      // TODO: Removed update bbox as the layer metadata does not have information about bounding box
+      // updateToBBox(layer.bbox, updateBbox);
+      // TODO: Need to handle Legend for POINT type layers especially when stops are high(CSV uploaded layers in particular)
+      // setLegend({ visible: true, stops:styleList[styleIndex].colors.paint['circle-color'].stops, squareSize:styleList[styleIndex].colors.paint['circle-color']['circle-radius'] });
     } else {
       const t = infobarData.filter(
         ({ layer }) => !layer.id.startsWith(HL.PREFIX + id)
@@ -297,7 +302,9 @@ export default function useLayerManager() {
     add = true
   ) => {
     const map = mapRef.current.getMap();
-    const prefixedId = `${LAYER_PREFIX_GRID}${id}`;
+    // const prefixedId = `${LAYER_PREFIX_GRID}${id}`;
+    const prefixedId = id;
+
     if (add) {
       const layer = layers[layerIndex];
       const source = map.getSource(prefixedId);
@@ -314,7 +321,7 @@ export default function useLayerManager() {
         map.getBounds(),
         viewPort.zoom
       );
-
+        
       if (success) {
         if (source) {
           source.setData(geojson);
@@ -376,6 +383,8 @@ export default function useLayerManager() {
   ) => {
     try {
       const layerIndex = layers.findIndex(o => o.layerTableName === id);
+      console.log('layers[layerIndex].layerType', layers[layerIndex].layerType);
+      
       switch (layers[layerIndex].layerType) {
         case "POINT":
           await toggleLayerVector(id, layerIndex, add, styleIndex, updateBbox);
