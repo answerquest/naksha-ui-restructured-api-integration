@@ -72,11 +72,6 @@
     "tslib": "^1.11.1",
     "typescript": "^3.8.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
   "eslint": {
     "rules": {
       "jsx-a11y/accessible-emoji": "off",
