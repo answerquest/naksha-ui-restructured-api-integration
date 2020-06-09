@@ -72,6 +72,8 @@ export interface GeoserverLayer {
   layerTableName?: string;
   titleColumn?: string;
   layerType?: string;
+  createdBy?: string;
+  license?: string;
   thumbnail?: string;
   bbox?: [[number, number], [number, number]];
   isAdded?: boolean;

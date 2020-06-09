@@ -1,4 +1,4 @@
-import { Box, Checkbox, Image, Spinner, Stack, Text } from "@chakra-ui/core";
+import { Box, Button, Image, Stack, Text, Badge } from "@chakra-ui/core";
 import { GeoserverLayer } from "interfaces/naksha";
 import React, { memo } from "react";
 import { useState } from "react";
@@ -20,54 +20,76 @@ const Item = memo<ItemProps>(({ data: { q = "", data }, index, style }) => {
   const [isLoading, setIsLoading] = useState(false);
   const layer = data[index];
 
-  const handleOnChange = async e => {
+  const handleToggleLayer = async e => {
     setIsLoading(true);
-    await toggleLayer(layer.layerTableName, e?.target?.checked);
+    await toggleLayer(layer.layerTableName, !layer.isAdded);
     setIsLoading(false);
   };
 
   return (
     <Stack
-      isInline={true}
       key={layer.id}
-      spacing="3"
+      spacing="1"
       borderBottom="1px"
       style={style}
       borderColor="gray.200"
-      p={3}
+      p={0}
     >
-      <Box minW="1.3rem">
-        {isLoading ? (
-          <Spinner emptyColor="gray.200" color="blue.500" size="md" />
-        ) : (
-          <Checkbox
-            size="lg"
-            isChecked={layer.isAdded}
-            onChange={handleOnChange}
-          />
-        )}
-      </Box>
-      <Image
-        borderRadius="md"
-        border="1px"
-        borderColor="gray.200"
-        objectFit="contain"
-        flexShrink={0}
-        size="4.5rem"
-        src={layer.thumbnail}
-        fallbackSrc={FALLBACK_THUMB}
-      />
-      <Box h="4.5rem" style={fadeOverflow}>
-        <Tooltip label={layer.layerDescription}>
-          <div>
-            <Text mb={1}>
-              <Highlight search={q}>{layer.layerName}</Highlight>
-            </Text>
-            <Box fontSize="sm" color="gray.600">
-              {layer.layerDescription}
-            </Box>
-          </div>
-        </Tooltip>
+      <Stack
+        isInline={true}
+        spacing="3"
+        p={0}
+      >
+        <Image
+          // borderRadius="md"
+          // border="1px"
+          // borderColor="gray.200"
+          objectFit="contain"
+          flexShrink={0}
+          size="5rem"
+          src={layer.thumbnail}
+          fallbackSrc={FALLBACK_THUMB}
+        />
+        <Box h="5rem" p={3} style={fadeOverflow}>
+          <Tooltip label={layer.layerDescription}>
+            <div>
+              <Text mb={1}>
+                <Highlight search={q}>{layer.layerName}</Highlight>
+              </Text>
+              <Box fontSize="sm" color="gray.600">
+                {layer.layerDescription}
+              </Box>
+            </div>
+          </Tooltip>
+        </Box>
+      </Stack>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        mx={3}>
+        <Box>
+          <Text fontSize="xs">
+            <Badge
+              variant="outline"
+              variantColor="green"
+              fontSize={10}
+              mr={1}>
+              {layer.license}
+            </Badge>
+            {layer.createdBy}
+          </Text>
+        </Box>
+        <Button
+          size="xs"
+          minW="5rem"
+          variantColor="blue"
+          variant={layer.isAdded ? "solid":"outline"}
+          onClick={handleToggleLayer}
+          isLoading={isLoading}
+        >
+          {layer.isAdded? "Remove from Map" : "Add to Map"}
+        </Button>
       </Box>
     </Stack>
   );

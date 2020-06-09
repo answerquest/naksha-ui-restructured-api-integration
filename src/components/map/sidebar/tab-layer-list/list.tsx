@@ -26,7 +26,7 @@ export default function LayersList({ q }: { q? }) {
           height={p.height}
           itemCount={filteredLayers.length}
           itemData={{ q, data: filteredLayers }}
-          itemSize={97}
+          itemSize={113}
         >
           {Item}
         </List>
