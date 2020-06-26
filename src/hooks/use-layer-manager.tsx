@@ -197,7 +197,7 @@ export default function useLayerManager() {
       if (!_draft[styleIndex].colors) {
         _draft[styleIndex].colors = await axGetGeoserverLayerStyle(
           // _draft[styleIndex].styleName,
-          `${layer.layerTableName}/${layer.titleColumn}`,
+          `${layer.layerTableName}/${layer.colorBy.toLowerCase()}`,
           nakshaApiEndpoint
         );
       }
@@ -270,7 +270,6 @@ export default function useLayerManager() {
       if (!map.getSource(id)) {
         map.addSource(id, layer.source);
       }
-      console.log('styleList', styleList);
       
       removeLayer(map, id);
       map.addLayer(styleList[styleIndex].colors);
@@ -387,6 +386,8 @@ export default function useLayerManager() {
       
       switch (layers[layerIndex].layerType) {
         case "POINT":
+        case "MULTIPOINT":
+        case "MULTIPOLYGON":
           await toggleLayerVector(id, layerIndex, add, styleIndex, updateBbox);
           break;
 

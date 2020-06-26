@@ -71,10 +71,13 @@ export interface GeoserverLayer {
   layerDescription?: string;
   layerTableName?: string;
   titleColumn?: string;
+  colorBy?: string;
   layerType?: string;
   createdBy?: string;
   license?: string;
+  attribution?: string;
   thumbnail?: string;
+  pdfLink?: string;
   bbox?: [[number, number], [number, number]];
   isAdded?: boolean;
   source: {
