@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/core";
 import React, { useEffect } from "react";
-import { emit, useListener } from "react-gbus";
+import { emit } from "react-gbus";
 import MapGL from "react-map-gl";
 
-import useDebounce from "../../hooks/use-debounce";
+// import useDebounce from "../../hooks/use-debounce";
 import useLayerManager from "../../hooks/use-layer-manager";
 import { useLayers } from "../../hooks/use-layers";
 import { defaultMapStyles } from "../../static/constants";
@@ -22,7 +22,7 @@ export default function Map() {
     viewPort,
     setViewPort,
     baseLayer,
-    layers,
+    // layers,
     infobarData,
     clickPopup,
     setClickPopup,
@@ -32,13 +32,13 @@ export default function Map() {
 
   const {
     updateWorldView,
-    reloadLayers,
+    // reloadLayers,
     onMapClick,
     onMapHover,
     renderHLData
   } = useLayerManager();
 
-  const debouncedViewPort = useDebounce(viewPort, 500);
+  // const debouncedViewPort = useDebounce(viewPort, 500);
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
 

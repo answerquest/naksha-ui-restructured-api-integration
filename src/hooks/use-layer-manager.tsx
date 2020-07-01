@@ -1,4 +1,4 @@
-import { WebMercatorViewport } from "@math.gl/web-mercator";
+// import { WebMercatorViewport } from "@math.gl/web-mercator";
 import bboxPolygon from "@turf/bbox";
 import produce from "immer";
 import { debounce } from "ts-debounce";
@@ -27,7 +27,6 @@ export default function useLayerManager() {
     mapRef,
     layers,
     viewPort,
-    setViewPort,
     infobarData,
     setInfobarData,
     selectedLayers,
@@ -170,7 +169,7 @@ export default function useLayerManager() {
         ? layer.id.startsWith(LAYER_PREFIX_GRID)
         : false;
       if (layer.isAdded || gridFlag) {
-        toggleLayer(layer.id, true, layer?.data?.styleIndex, false);
+        toggleLayer(layer.id, true, layer?.data?.styleIndex);
       }
     });
     mapRef.current.getMap().once("idle", () => {
@@ -213,18 +212,18 @@ export default function useLayerManager() {
    * @param {*} bbox array of bbox coordinates
    * @param {boolean} updateBbox if passed false this function will do nothing
    */
-  const updateToBBox = (bbox, updateBbox: boolean) => {
-    if (updateBbox) {
-      const viewportx = new WebMercatorViewport(viewPort);
-      const { longitude, latitude, zoom } = viewportx.fitBounds(bbox);
-      setViewPort(o => ({
-        ...o,
-        longitude,
-        latitude,
-        zoom: zoom - 0.2
-      }));
-    }
-  };
+  // const updateToBBox = (bbox, updateBbox: boolean) => {
+  //   if (updateBbox) {
+  //     const viewportx = new WebMercatorViewport(viewPort);
+  //     const { longitude, latitude, zoom } = viewportx.fitBounds(bbox);
+  //     setViewPort(o => ({
+  //       ...o,
+  //       longitude,
+  //       latitude,
+  //       zoom: zoom - 0.2
+  //     }));
+  //   }
+  // };
 
   /**
    * 🚨 don't call this function directly call `toggleLayer()` instead
@@ -241,7 +240,6 @@ export default function useLayerManager() {
     layerIndex: number,
     add = true,
     styleIndex = 0,
-    updateBbox = true
   ) => {
     const map = mapRef.current.getMap();
     const layer = layers[layerIndex];
@@ -265,12 +263,12 @@ export default function useLayerManager() {
       }
       _draft[layerIndex].isAdded = add;
     });
-    
+
     if (add) {
       if (!map.getSource(id)) {
         map.addSource(id, layer.source);
       }
-      
+
       removeLayer(map, id);
       map.addLayer(styleList[styleIndex].colors);
       // TODO: Removed update bbox as the layer metadata does not have information about bounding box
@@ -320,7 +318,7 @@ export default function useLayerManager() {
         map.getBounds(),
         viewPort.zoom
       );
-        
+
       if (success) {
         if (source) {
           source.setData(geojson);
@@ -378,17 +376,15 @@ export default function useLayerManager() {
     id: string,
     add = true,
     styleIndex = 0,
-    updateBbox = true
+    // updateBbox = true
   ) => {
     try {
       const layerIndex = layers.findIndex(o => o.layerTableName === id);
-      console.log('layers[layerIndex].layerType', layers[layerIndex].layerType);
-      
       switch (layers[layerIndex].layerType) {
         case "POINT":
         case "MULTIPOINT":
         case "MULTIPOLYGON":
-          await toggleLayerVector(id, layerIndex, add, styleIndex, updateBbox);
+          await toggleLayerVector(id, layerIndex, add, styleIndex);
           break;
 
         case "grid":
@@ -409,7 +405,11 @@ export default function useLayerManager() {
    *
    */
   const getGeoserverLayers = async () => {
-    const layersData = await axGetGeoserverLayers(geoserver, nakshaApiEndpoint, selectedLayers);
+    const layersData = await axGetGeoserverLayers(
+      geoserver,
+      nakshaApiEndpoint,
+      selectedLayers
+    );
     setLayers(_draft => {
       _draft.push(...layersData);
     });

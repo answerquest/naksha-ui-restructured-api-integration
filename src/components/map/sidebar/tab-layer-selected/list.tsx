@@ -19,7 +19,7 @@ export default function LayersList({ q }: { q? }) {
     setFilteredLayers(
       q
         ? selectedLayers.filter(l =>
-            l.title.toLowerCase().includes(q.toLowerCase())
+            l.layerName.toLowerCase().includes(q.toLowerCase())
           )
         : selectedLayers
     );

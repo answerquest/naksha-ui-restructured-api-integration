@@ -3,20 +3,19 @@ import cb from "colorbrewer";
 
 import { compiledMessage } from "../utils/basic";
 import { geohashToJSON, getDataBins, getZoomConfig } from "../utils/grid";
-import { parseGeoserverLayersXml, parseBbox } from "../utils/naksha";
+import { parseGeoserverLayersXml } from "../utils/naksha";
 
 export const axGetGeoserverLayers = async (
-  {endpoint, workspace},
+  { endpoint, workspace },
   nakshaApiEndpoint,
   selectedLayers
 ) => {
   try {
-    const res = await axios.get(
-      `${nakshaApiEndpoint}/layer/all`,
-      { responseType: "json" }
-    );
+    const res = await axios.get(`${nakshaApiEndpoint}/layer/all`, {
+      responseType: "json"
+    });
     const selectedLayersIDs = selectedLayers.map(({ id }) => id);
-    return  res.data.map((l, index) => {
+    return res.data.map((l) => {
       return {
         ...l,
         data: { styles: [] },
@@ -29,8 +28,8 @@ export const axGetGeoserverLayers = async (
         },
         isAdded: selectedLayersIDs.includes(l.id)
         // bbox: parseBbox(l),
-      }
-    })
+      };
+    });
   } catch (e) {
     console.error(e);
     return [];
@@ -70,9 +69,7 @@ export const axGetGeoserverLayerStyleList = async (id, endpoint) => {
 
 export const axGetGeoserverLayerStyle = async (styleName, endpoint) => {
   try {
-    const res = await axios.get(
-      `${endpoint}/geoserver/styles/${styleName}`
-    );
+    const res = await axios.get(`${endpoint}/geoserver/styles/${styleName}`);
     return res.data?.layers?.[0];
   } catch (e) {
     console.error(e);
@@ -97,7 +94,7 @@ export const getGridLayerData = async (
       right: _ne.lng,
       precision
     });
-    
+
     const { data } = await axios.get(endpoint);
 
     const geojson = geohashToJSON(data, level);

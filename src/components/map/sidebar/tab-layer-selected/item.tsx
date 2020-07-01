@@ -36,7 +36,7 @@ const Item = ({ layer, q }: ItemProps) => {
   const removeLayer = () => toggleLayer(layer.id, false);
 
   const updateLayerStyle = e =>
-    toggleLayer(layer.id, true, Number(e.target.value), false);
+    toggleLayer(layer.id, true, Number(e.target.value));
 
   return (
     <Box p={3} key={layer.id} borderBottom="1px" borderColor="gray.200">

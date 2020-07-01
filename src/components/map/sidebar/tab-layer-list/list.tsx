@@ -13,7 +13,9 @@ export default function LayersList({ q }: { q? }) {
   useEffect(() => {
     setFilteredLayers(
       q
-        ? layers.filter(l => l.layerName.toLowerCase().includes(q.toLowerCase()))
+        ? layers.filter(l =>
+            l.layerName.toLowerCase().includes(q.toLowerCase())
+          )
         : layers
     );
   }, [q, layers]);
