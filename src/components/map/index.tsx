@@ -22,17 +22,18 @@ export default function Map() {
     viewPort,
     setViewPort,
     baseLayer,
-    // layers,
+    layers,
     infobarData,
     clickPopup,
     setClickPopup,
     hoverPopup,
-    setHoverPopup
+    setHoverPopup,
+    externalLayers
   } = useLayers();
-
+  const { toggleLayer } = useLayerManager();
   const {
     updateWorldView,
-    // reloadLayers,
+    reloadLayers,
     onMapClick,
     onMapHover,
     renderHLData
@@ -44,15 +45,24 @@ export default function Map() {
 
   const onLoad = () => {
     updateWorldView();
+    loadLayer();
     mapRef.current.getMap().on("style.load", () => {
       updateWorldView();
       emit("STYLE_UPDATED");
     });
   };
 
-  // useEffect(() => {
-  //   reloadLayers();
-  // }, [layers.length]);
+  const loadLayer = async () => {
+    await toggleLayer(externalLayers[0].layerTableName, true);
+  };
+
+  useEffect(() => {
+    loadLayer();
+  }, [externalLayers]);
+
+  useEffect(() => {
+    reloadLayers();
+  }, [layers.length]);
 
   // useEffect(() => {
   //   reloadLayers(true);
@@ -61,7 +71,7 @@ export default function Map() {
   useEffect(() => {
     renderHLData();
   }, [infobarData]);
-
+  console.log("viewPort", viewPort);
   return (
     <Box size="full" position="relative">
       <MapGL

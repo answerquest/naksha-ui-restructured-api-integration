@@ -21,6 +21,13 @@ export interface SelectedLayers {
   source?: string;
 }
 
+export interface ExternalLayers {
+  id: string;
+  type: LayerType;
+  source?: string;
+  layerTableName: string
+}
+
 export interface ExtendedMarkerProps {
   latitude: number;
   longitude: number;
@@ -32,6 +39,7 @@ export interface NakshaProps {
 
   loadToC?: boolean;
   showToC?: boolean;
+  defaultLayers?: {};
 
   mapboxApiAccessToken: string;
   nakshaApiEndpoint?: string;
@@ -42,6 +50,7 @@ export interface NakshaProps {
   };
 
   selectedLayers?: SelectedLayers[];
+  externalLayers?: ExternalLayers[];
   baseLayer?: BaseLayer;
   layers?: GeoserverLayer[];
   markers?: ExtendedMarkerProps[];

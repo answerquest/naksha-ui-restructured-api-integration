@@ -17,6 +17,7 @@ export const defaultNakshaProps: NakshaProps = {
   baseLayer: BaseLayer.MAP_STREETS,
   layers: [],
   selectedLayers: [],
+  externalLayers: [],
   markers: []
 };
 

@@ -14,7 +14,8 @@ import {
   GeoserverLayer,
   IUseDisclosure,
   NakshaProps,
-  SelectedLayers
+  SelectedLayers,
+  ExternalLayers
 } from "../interfaces/naksha";
 import { defaultNakshaProps } from "../static/constants";
 
@@ -31,6 +32,7 @@ interface LayerContextProps extends NakshaProps {
 
   setViewPort?;
   setSelectedLayers?: (f: (draft: SelectedLayers[]) => any) => void;
+  setExternalLayers?: (f: (draft: ExternalLayers[]) => any) => void;
 
   legend?;
   setLegend?;
@@ -55,6 +57,7 @@ export const LayersProvider = (props: NakshaProps) => {
   const [layers, setLayers] = useImmer(props.layers);
 
   const [selectedLayers, setSelectedLayers] = useImmer(props.selectedLayers);
+  const [externalLayers, setExternalLayers] = useImmer(props.externalLayers);
   const [infobarData, setInfobarData] = useState<any>([]);
   const [legend, setLegend] = useState({});
 
@@ -74,6 +77,9 @@ export const LayersProvider = (props: NakshaProps) => {
 
         selectedLayers,
         setSelectedLayers,
+
+        externalLayers,
+        setExternalLayers,
 
         viewPort,
         setViewPort,
