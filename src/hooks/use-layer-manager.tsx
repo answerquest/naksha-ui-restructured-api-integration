@@ -32,8 +32,7 @@ export default function useLayerManager() {
     selectedLayers,
     setLegend,
     setClickPopup,
-    setHoverPopup,
-    setExternalLayers
+    setHoverPopup
   } = useLayers();
 
   /**
@@ -240,12 +239,11 @@ export default function useLayerManager() {
     id: string,
     layerIndex: number,
     add = true,
-    styleIndex = 0,
+    styleIndex = 0
   ) => {
     const map = mapRef.current.getMap();
     const layer = layers[layerIndex];
-    console.log('layerIndex', layerIndex);
-    
+
     const styleList = await getLayerStyle(layer, styleIndex);
 
     const propertyMap = styleList.reduce(
@@ -273,7 +271,7 @@ export default function useLayerManager() {
       }
 
       removeLayer(map, id);
-      
+
       map.addLayer(styleList[styleIndex].colors);
       // TODO: Removed update bbox as the layer metadata does not have information about bounding box
       // updateToBBox(layer.bbox, updateBbox);
@@ -303,12 +301,11 @@ export default function useLayerManager() {
     styles,
     add = true,
     layerIndex = 0,
-    styleIndex = 0
   ) => {
     const map = mapRef.current.getMap();
     const layer = layers[layerIndex];
     const styleList = styles;
-    
+
     // setExternalLayers(_draft => {
     //   _draft.push({id:id,styles:styleList});
     // });
@@ -424,11 +421,7 @@ export default function useLayerManager() {
    * @param {number} [styleIndex=0] style index defaults to zero
    * @param {boolean} [updateBbox=true] weather to zoom to that layer once loaded or not
    */
-  const toggleExternalLayer = async (
-    id: string,
-    styles:{},
-    add = true,
-  ) => {
+  const toggleExternalLayer = async (id: string, styles: {}, add = true) => {
     try {
       const layerIndex = layers.findIndex(o => o.layerTableName === id);
       await toggleExternalLayerVector(id, styles, add, layerIndex);
@@ -448,7 +441,7 @@ export default function useLayerManager() {
   const toggleLayer = async (
     id: string,
     add = true,
-    styleIndex = 0,
+    styleIndex = 0
     // updateBbox = true
   ) => {
     try {

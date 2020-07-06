@@ -45,7 +45,7 @@ export default function Map() {
   const [mapLoaded, setMapLoaded] = useState(false);
   const onLoad = () => {
     setMapLoaded(true);
-    if(externalLayers && externalLayers.length > 0) toggleExternalLayers();
+    if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
     updateWorldView();
     mapRef.current.getMap().on("style.load", () => {
       updateWorldView();
@@ -54,11 +54,15 @@ export default function Map() {
   };
 
   const toggleExternalLayers = async () => {
-    await toggleExternalLayer(externalLayers[0].id,externalLayers[0].styles,true);
+    await toggleExternalLayer(
+      externalLayers[0].id,
+      externalLayers[0].styles,
+      true
+    );
   };
 
   useEffect(() => {
-    if(mapLoaded) toggleExternalLayers();
+    if (mapLoaded) toggleExternalLayers();
   }, [externalLayers]);
 
   useEffect(() => {
