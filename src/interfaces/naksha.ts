@@ -23,9 +23,7 @@ export interface SelectedLayers {
 
 export interface ExternalLayers {
   id: string;
-  type: LayerType;
-  source?: string;
-  layerTableName: string
+  styles: {};
 }
 
 export interface ExtendedMarkerProps {

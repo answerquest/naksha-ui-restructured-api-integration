@@ -32,7 +32,8 @@ export default function useLayerManager() {
     selectedLayers,
     setLegend,
     setClickPopup,
-    setHoverPopup
+    setHoverPopup,
+    setExternalLayers
   } = useLayers();
 
   /**
@@ -243,6 +244,8 @@ export default function useLayerManager() {
   ) => {
     const map = mapRef.current.getMap();
     const layer = layers[layerIndex];
+    console.log('layerIndex', layerIndex);
+    
     const styleList = await getLayerStyle(layer, styleIndex);
 
     const propertyMap = styleList.reduce(
@@ -270,6 +273,7 @@ export default function useLayerManager() {
       }
 
       removeLayer(map, id);
+      
       map.addLayer(styleList[styleIndex].colors);
       // TODO: Removed update bbox as the layer metadata does not have information about bounding box
       // updateToBBox(layer.bbox, updateBbox);
@@ -281,6 +285,54 @@ export default function useLayerManager() {
       );
       setInfobarData(t);
 
+      removeLayer(map, id);
+    }
+  };
+  /**
+   * 🚨 don't call this function directly call `toggleExternalLayer()` instead
+   * Toggles 🔀 geoserver vector type layer from external source
+   *
+   * @param {string} id layer id from geoserver
+   * @param {number} layerIndex index of layer in layers array
+   * @param {boolean} [add=true] weather to add or remove layer
+   * @param {number} [styleIndex=0] index of style defaults to first style
+   * @param {boolean} [updateBbox=true] weather to zoom to that layer once loaded or not
+   */
+  const toggleExternalLayerVector = async (
+    id,
+    styles,
+    add = true,
+    layerIndex = 0,
+    styleIndex = 0
+  ) => {
+    const map = mapRef.current.getMap();
+    const layer = layers[layerIndex];
+    const styleList = styles;
+    
+    // setExternalLayers(_draft => {
+    //   _draft.push({id:id,styles:styleList});
+    // });
+
+    // const propertyMap = styleList.reduce(
+    //   (acc, cv) => ({
+    //     ...acc,
+    //     [cv.styleName.replace(`${id}_`, "")]: cv.styleTitle
+    //   }),
+    //   []
+    // );
+
+    if (add) {
+      if (!map.getSource(id)) {
+        map.addSource(id, layer.source);
+      }
+
+      // removeLayer(map, id);
+      map.addLayer(styleList.colors);
+    } else {
+      const t = infobarData.filter(
+        ({ layer }) => !layer.id.startsWith(HL.PREFIX + id)
+      );
+      setInfobarData(t);
       removeLayer(map, id);
     }
   };
@@ -365,6 +417,27 @@ export default function useLayerManager() {
   };
 
   /**
+   * Toggle vector layer from external app
+   *
+   * @param {string} id Layer ID
+   * @param {boolean} [add=true] weather to add or remove layer
+   * @param {number} [styleIndex=0] style index defaults to zero
+   * @param {boolean} [updateBbox=true] weather to zoom to that layer once loaded or not
+   */
+  const toggleExternalLayer = async (
+    id: string,
+    styles:{},
+    add = true,
+  ) => {
+    try {
+      const layerIndex = layers.findIndex(o => o.layerTableName === id);
+      await toggleExternalLayerVector(id, styles, add, layerIndex);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  /**
    * Toggle any kind of layer supported by this library
    *
    * @param {string} id Layer ID
@@ -422,6 +495,7 @@ export default function useLayerManager() {
     reloadLayers,
     renderHLData,
     toggleLayer,
-    updateWorldView
+    updateWorldView,
+    toggleExternalLayer
   };
 }

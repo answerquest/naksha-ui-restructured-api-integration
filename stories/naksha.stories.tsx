@@ -38,16 +38,7 @@ export const toStorybook = () => (
     geoserver={object("Geoserver", JSON.parse(process.env.STORYBOOK_GEOSERVER))}
     theme={object("Theme", theme)}
     selectedLayers={object("Selected Layers", [])}
-    externalLayers={object("External Layers", [
-      {
-        colorBy: "DISTRICT",
-        id: '217',
-        layerDescription: "Multipolygon District",
-        layerName: "Multipolygon District",
-        layerTableName: "lyr_217_india_tahsil_2018_distupdated",
-        type: "vector",
-      }
-    ])}
+    externalLayers={object("External Layers", [])}
   />
 );
 

@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/core";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { emit } from "react-gbus";
 import MapGL from "react-map-gl";
 
@@ -30,7 +30,7 @@ export default function Map() {
     setHoverPopup,
     externalLayers
   } = useLayers();
-  const { toggleLayer } = useLayerManager();
+  const { toggleExternalLayer } = useLayerManager();
   const {
     updateWorldView,
     reloadLayers,
@@ -42,22 +42,23 @@ export default function Map() {
   // const debouncedViewPort = useDebounce(viewPort, 500);
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
-
+  const [mapLoaded, setMapLoaded] = useState(false);
   const onLoad = () => {
+    setMapLoaded(true);
+    if(externalLayers && externalLayers.length > 0) toggleExternalLayers();
     updateWorldView();
-    loadLayer();
     mapRef.current.getMap().on("style.load", () => {
       updateWorldView();
       emit("STYLE_UPDATED");
     });
   };
 
-  const loadLayer = async () => {
-    await toggleLayer(externalLayers[0].layerTableName, true);
+  const toggleExternalLayers = async () => {
+    await toggleExternalLayer(externalLayers[0].id,externalLayers[0].styles,true);
   };
 
   useEffect(() => {
-    loadLayer();
+    if(mapLoaded) toggleExternalLayers();
   }, [externalLayers]);
 
   useEffect(() => {
@@ -71,7 +72,6 @@ export default function Map() {
   useEffect(() => {
     renderHLData();
   }, [infobarData]);
-  console.log("viewPort", viewPort);
   return (
     <Box size="full" position="relative">
       <MapGL
