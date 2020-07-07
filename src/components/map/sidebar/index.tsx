@@ -27,12 +27,12 @@ const TabContainer = styled.div`
 `;
 
 export default function Sidebar() {
-  const { ToC, geoserver } = useLayers();
+  const { ToC } = useLayers();
   const { getGeoserverLayers } = useLayerManager();
 
   useEffect(() => {
     getGeoserverLayers();
-  }, [geoserver]);
+  }, []);
 
   return ToC.isOpen ? (
     <TabContainer>

@@ -41,7 +41,6 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   // const debouncedViewPort = useDebounce(viewPort, 500);
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
-  const [mapLoaded, setMapLoaded] = useState(false);
   const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
 
   const onLoad = () => {
@@ -62,16 +61,15 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     }
     
     await toggleExternalLayer(
-      q[0].id,
-      q[0].styles,
+      externalLayers[0].id,
+      externalLayers[0].styles,
       true
     );
     setCurrentExternalLayer(externalLayers);
   };
 
   useEffect(() => {
-    console.log("External Layers Changed. mapLoaded = ", mapLoaded)
-    if (mapLoaded) toggleExternalLayers();
+    toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
