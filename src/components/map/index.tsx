@@ -64,7 +64,7 @@ export default function Map() {
   useEffect(() => {
     console.log("External Layers Changed. mapLoaded = ", mapLoaded)
     if (mapLoaded) toggleExternalLayers();
-  }, [externalLayers]);
+  }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
     reloadLayers();
