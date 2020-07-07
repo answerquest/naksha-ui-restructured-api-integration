@@ -11,7 +11,7 @@ export default function Naksha(props: NakshaProps) {
     <LayersProvider {...defaultNakshaProps} {...props}>
       <ThemeProvider theme={props.theme || theme}>
         <CSSReset />
-        <Map />
+        <Map q={props.externalLayers}/>
       </ThemeProvider>
     </LayersProvider>
   );

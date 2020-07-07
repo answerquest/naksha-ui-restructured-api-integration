@@ -14,7 +14,7 @@ import Navigation from "./navigation";
 import Popup from "./popup";
 import Sidebar from "./sidebar";
 
-export default function Map() {
+export default function Map({ q }: { q? }) {
   const {
     mapRef,
     loadToC,
@@ -55,16 +55,20 @@ export default function Map() {
 
   const toggleExternalLayers = async () => {
     await toggleExternalLayer(
-      externalLayers[0].id,
-      externalLayers[0].styles,
+      q[0].id,
+      q[0].styles,
       true
     );
   };
 
   useEffect(() => {
-    console.log("External Layers Changed. mapLoaded = ", mapLoaded)
     if (mapLoaded) toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
+
+  useEffect(() => {
+    console.log("External Layers Changed. mapLoaded = ", mapLoaded)
+    if (mapLoaded) toggleExternalLayers();
+  }, [JSON.stringify(q)]);
 
   useEffect(() => {
     reloadLayers();
