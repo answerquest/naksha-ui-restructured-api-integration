@@ -14,7 +14,7 @@ import Navigation from "./navigation";
 import Popup from "./popup";
 import Sidebar from "./sidebar";
 
-export default function Map({ q }: { q? }) {
+export default function Map({ externalLayers }: { externalLayers? }) {
   const {
     mapRef,
     loadToC,
@@ -28,7 +28,6 @@ export default function Map({ q }: { q? }) {
     setClickPopup,
     hoverPopup,
     setHoverPopup,
-    externalLayers
   } = useLayers();
   const { toggleExternalLayer } = useLayerManager();
   const {
@@ -46,8 +45,6 @@ export default function Map({ q }: { q? }) {
   const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
 
   const onLoad = () => {
-    setMapLoaded(true);
-    if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
     updateWorldView();
     mapRef.current.getMap().on("style.load", () => {
       updateWorldView();
@@ -69,17 +66,13 @@ export default function Map({ q }: { q? }) {
       q[0].styles,
       true
     );
-    setCurrentExternalLayer(q);
+    setCurrentExternalLayer(externalLayers);
   };
-
-  useEffect(() => {
-    if (mapLoaded) toggleExternalLayers();
-  }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
     console.log("External Layers Changed. mapLoaded = ", mapLoaded)
     if (mapLoaded) toggleExternalLayers();
-  }, [JSON.stringify(q)]);
+  }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
     reloadLayers();
