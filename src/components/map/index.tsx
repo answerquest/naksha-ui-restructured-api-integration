@@ -43,6 +43,8 @@ export default function Map({ q }: { q? }) {
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
+
   const onLoad = () => {
     setMapLoaded(true);
     if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
@@ -54,11 +56,20 @@ export default function Map({ q }: { q? }) {
   };
 
   const toggleExternalLayers = async () => {
+    if(currentExternalLayer){
+      await toggleExternalLayer(
+        currentExternalLayer[0].id,
+        currentExternalLayer[0].styles,
+        false
+      );
+    }
+    
     await toggleExternalLayer(
       q[0].id,
       q[0].styles,
       true
     );
+    setCurrentExternalLayer(q);
   };
 
   useEffect(() => {
