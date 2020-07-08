@@ -14,7 +14,7 @@ export const defaultNakshaProps: NakshaProps = {
 
   theme,
 
-  baseLayer: BaseLayer.HELATH_HEAT_MAP,
+  baseLayer: BaseLayer.MAP_DARK,
   layers: [],
   selectedLayers: [],
   externalLayers: [],
@@ -22,11 +22,6 @@ export const defaultNakshaProps: NakshaProps = {
 };
 
 export const defaultMapStyles = [
-  {
-    text: "HealthHeatMap",
-    key: BaseLayer.HELATH_HEAT_MAP,
-    style: "mapbox://styles/deepkt/ckcc330rt6pvg1iqhch7o66bb"
-  },
   {
     text: "Streets",
     key: BaseLayer.MAP_STREETS,

@@ -10,10 +10,9 @@ export enum LayerActions {
 }
 
 export enum BaseLayer {
-  HELATH_HEAT_MAP = "0",
-  MAP_STREETS = "1",
-  MAP_SATELLITE = "2",
-  MAP_DARK = "3"
+  MAP_STREETS = "0",
+  MAP_SATELLITE = "1",
+  MAP_DARK = "2"
 }
 
 export interface SelectedLayers {
