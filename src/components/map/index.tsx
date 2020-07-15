@@ -69,7 +69,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   useEffect(() => {
-    if (externalLayers && externalLayers.lenght >= 0) toggleExternalLayers();
+    if (externalLayers && externalLayers.length >= 0) toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
