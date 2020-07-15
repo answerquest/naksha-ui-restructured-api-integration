@@ -27,7 +27,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     clickPopup,
     setClickPopup,
     hoverPopup,
-    setHoverPopup,
+    setHoverPopup
   } = useLayers();
   const { toggleExternalLayer } = useLayerManager();
   const {
@@ -52,14 +52,14 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   const toggleExternalLayers = async () => {
-    if(currentExternalLayer){
+    if (currentExternalLayer) {
       await toggleExternalLayer(
         currentExternalLayer[0].id,
         currentExternalLayer[0].styles,
         false
       );
     }
-    
+
     await toggleExternalLayer(
       externalLayers[0].id,
       externalLayers[0].styles,
@@ -69,7 +69,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   useEffect(() => {
-    toggleExternalLayers();
+    if (externalLayers && externalLayers.lenght >= 0) toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
