@@ -67,8 +67,6 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     );
     setCurrentExternalLayer(externalLayers);
   };
-  const x = "Just Checkeking actions tricgger";
-  console.log("Its working due to", x);
 
   useEffect(() => {
     if (externalLayers && externalLayers.length >= 0) toggleExternalLayers();
