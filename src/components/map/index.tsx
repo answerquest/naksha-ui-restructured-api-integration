@@ -41,7 +41,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   // const debouncedViewPort = useDebounce(viewPort, 500);
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
-  const [currentExternalLayer, setCurrentExternalLayer] = useState([]);
+  const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
 
   const onLoad = () => {
     updateWorldView();
