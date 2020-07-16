@@ -41,7 +41,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   // const debouncedViewPort = useDebounce(viewPort, 500);
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
-  const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
+  const [currentExternalLayer, setCurrentExternalLayer] = useState([]);
 
   const onLoad = () => {
     updateWorldView();
@@ -69,7 +69,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   useEffect(() => {
-    if (externalLayers && externalLayers.length >= 0) toggleExternalLayers();
+    if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
