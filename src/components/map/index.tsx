@@ -75,7 +75,6 @@ const Map = React.forwardRef(({ ref }: { ref? }) => {
 
   useEffect(() => {
     reloadLayers();
-    c
   }, [layers.length]);
 
   useEffect(() => {
