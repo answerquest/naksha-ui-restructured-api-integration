@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/core";
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import { emit } from "react-gbus";
 import MapGL from "react-map-gl";
 
@@ -14,7 +14,7 @@ import Navigation from "./navigation";
 import Popup from "./popup";
 import Sidebar from "./sidebar";
 
-export default function Map({ externalLayers }: { externalLayers? }) {
+export default function Map({ ref }: { ref? }) {
   const {
     mapRef,
     loadToC,
@@ -29,7 +29,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     hoverPopup,
     setHoverPopup
   } = useLayers();
-  const { toggleExternalLayer } = useLayerManager();
+  // const { toggleExternalLayer } = useLayerManager();
   const {
     updateWorldView,
     reloadLayers,
@@ -41,7 +41,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   // const debouncedViewPort = useDebounce(viewPort, 500);
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
-  const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
+  // const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
 
   const onLoad = () => {
     updateWorldView();
@@ -51,35 +51,35 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     });
   };
 
-  const toggleExternalLayers = async () => {
-    if (currentExternalLayer) {
-      await toggleExternalLayer(
-        currentExternalLayer[0].id,
-        currentExternalLayer[0].styles,
-        false
-      );
-    }
+  // const toggleExternalLayers = async () => {
+  //   if (currentExternalLayer) {
+  //     await toggleExternalLayer(
+  //       currentExternalLayer[0].id,
+  //       currentExternalLayer[0].styles,
+  //       false
+  //     );
+  //   }
 
-    await toggleExternalLayer(
-      externalLayers[0].id,
-      externalLayers[0].styles,
-      true
-    );
-    setCurrentExternalLayer(externalLayers);
-  };
+  //   await toggleExternalLayer(
+  //     externalLayers[0].id,
+  //     externalLayers[0].styles,
+  //     true
+  //   );
+  //   setCurrentExternalLayer(externalLayers);
+  // };
 
-  useEffect(() => {
-    console.log("externalLayers", externalLayers);
-    if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
-  }, [JSON.stringify(externalLayers)]);
+  // useEffect(() => {
+  //   console.log("externalLayers", externalLayers);
+  //   if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
+  // }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
     reloadLayers();
   }, [layers.length]);
 
-  // useEffect(() => {
-  //   reloadLayers(true);
-  // }, [debouncedViewPort]);
+  useEffect(() => {
+    console.log("Ref", ref)
+  }, [ref]);
 
   useEffect(() => {
     renderHLData();

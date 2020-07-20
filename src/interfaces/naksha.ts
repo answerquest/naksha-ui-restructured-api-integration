@@ -41,6 +41,7 @@ export interface NakshaProps {
 
   mapboxApiAccessToken: string;
   nakshaApiEndpoint?: string;
+  forwardedRef?: string;
   geoserver?: {
     endpoint: string;
     store: string;
