@@ -75,10 +75,11 @@ const Map = React.forwardRef(({ ref }: { ref? }) => {
 
   useEffect(() => {
     reloadLayers();
+    c
   }, [layers.length]);
 
   useEffect(() => {
-    console.log("Ref", ref);
+    console.log("Ref in Naksha", ref);
   }, [ref]);
 
   useEffect(() => {
