@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/core";
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import { emit } from "react-gbus";
 import MapGL from "react-map-gl";
 
@@ -14,7 +14,7 @@ import Navigation from "./navigation";
 import Popup from "./popup";
 import Sidebar from "./sidebar";
 
-export default function Map({ ref }: { ref? }) {
+const Map = React.forwardRef(({ ref }: { ref? }) => {
   const {
     mapRef,
     loadToC,
@@ -78,7 +78,7 @@ export default function Map({ ref }: { ref? }) {
   }, [layers.length]);
 
   useEffect(() => {
-    console.log("Ref", ref)
+    console.log("Ref", ref);
   }, [ref]);
 
   useEffect(() => {
@@ -111,4 +111,5 @@ export default function Map({ ref }: { ref? }) {
       {infobarData.length > 0 && <InfoBar />}
     </Box>
   );
-}
+});
+export default Map;
