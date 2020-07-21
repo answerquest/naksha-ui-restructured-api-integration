@@ -65,7 +65,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     });
 
     const layersToAdd = _.filter(externalLayers, layer => {
-      return _.find(addedLayers, l => layer.id === l.id) === undefined;
+      return _.find(addedLayers, l => layer.id === l.id && layer.type === l.type) === undefined;
     });
 
     setAddedLayers([...addedLayers, ...layersToAdd]);
