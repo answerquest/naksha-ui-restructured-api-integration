@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/core";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { emit } from "react-gbus";
 import MapGL from "react-map-gl";
 
@@ -14,7 +14,7 @@ import Navigation from "./navigation";
 import Popup from "./popup";
 import Sidebar from "./sidebar";
 
-const Map = React.forwardRef(({ ref }: { ref? }) => {
+export default function Map({ externalLayers }: { externalLayers? }) {
   const {
     mapRef,
     loadToC,
@@ -29,7 +29,7 @@ const Map = React.forwardRef(({ ref }: { ref? }) => {
     hoverPopup,
     setHoverPopup
   } = useLayers();
-  // const { toggleExternalLayer } = useLayerManager();
+  const { toggleExternalLayer } = useLayerManager();
   const {
     updateWorldView,
     reloadLayers,
@@ -41,7 +41,7 @@ const Map = React.forwardRef(({ ref }: { ref? }) => {
   // const debouncedViewPort = useDebounce(viewPort, 500);
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
-  // const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
+  const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
 
   const onLoad = () => {
     updateWorldView();
@@ -51,35 +51,35 @@ const Map = React.forwardRef(({ ref }: { ref? }) => {
     });
   };
 
-  // const toggleExternalLayers = async () => {
-  //   if (currentExternalLayer) {
-  //     await toggleExternalLayer(
-  //       currentExternalLayer[0].id,
-  //       currentExternalLayer[0].styles,
-  //       false
-  //     );
-  //   }
+  const toggleExternalLayers = async () => {
+    if (currentExternalLayer) {
+      await toggleExternalLayer(
+        currentExternalLayer[0].id,
+        currentExternalLayer[0].styles,
+        false
+      );
+    }
 
-  //   await toggleExternalLayer(
-  //     externalLayers[0].id,
-  //     externalLayers[0].styles,
-  //     true
-  //   );
-  //   setCurrentExternalLayer(externalLayers);
-  // };
+    await toggleExternalLayer(
+      externalLayers[0].id,
+      externalLayers[0].styles,
+      true
+    );
+    setCurrentExternalLayer(externalLayers);
+  };
 
-  // useEffect(() => {
-  //   console.log("externalLayers", externalLayers);
-  //   if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
-  // }, [JSON.stringify(externalLayers)]);
+  useEffect(() => {
+    console.log("externalLayers", externalLayers);
+    if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
+  }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
     reloadLayers();
   }, [layers.length]);
 
-  useEffect(() => {
-    console.log("Ref in Naksha", ref);
-  }, [ref]);
+  // useEffect(() => {
+  //   reloadLayers(true);
+  // }, [debouncedViewPort]);
 
   useEffect(() => {
     renderHLData();
@@ -111,5 +111,4 @@ const Map = React.forwardRef(({ ref }: { ref? }) => {
       {infobarData.length > 0 && <InfoBar />}
     </Box>
   );
-});
-export default Map;
+}
