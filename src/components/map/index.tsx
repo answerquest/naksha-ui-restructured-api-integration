@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/core";
 import React, { useState, useEffect } from "react";
 import { emit } from "react-gbus";
+import _ from "underscore";
 import MapGL from "react-map-gl";
 
 // import useDebounce from "../../hooks/use-debounce";
@@ -41,7 +42,8 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   // const debouncedViewPort = useDebounce(viewPort, 500);
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
-  const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
+  // const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
+  const [addedLayers, setAddedLayers] = useState([]);
 
   const onLoad = () => {
     updateWorldView();
@@ -52,24 +54,31 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   const toggleExternalLayers = async () => {
-    if (currentExternalLayer) {
-      await toggleExternalLayer(
-        currentExternalLayer[0].id,
-        currentExternalLayer[0].styles,
-        false
-      );
-    }
+    // if (currentExternalLayer) {
+    //   await toggleExternalLayer(
+    //     currentExternalLayer[0].id,
+    //     currentExternalLayer[0].styles,
+    //     false
+    //   );
+    // }
+    const layersToAdd = _.filter(externalLayers, layer => {
+      return _.find(addedLayers, l => layer.id === l.id) === undefined;
+    });
+    setAddedLayers([...addedLayers, ...layersToAdd]);
 
-    await toggleExternalLayer(
-      externalLayers[0].id,
-      externalLayers[0].styles,
-      true
-    );
-    setCurrentExternalLayer(externalLayers);
+    _.each(layersToAdd, layer => {
+      toggleExternalLayer(layer.id, layer.styles, true);
+    });
+    console.log("addedLayers", addedLayers);
+    // await toggleExternalLayer(
+    //   externalLayers[0].id,
+    //   externalLayers[0].styles,
+    //   true
+    // );
+    // setCurrentExternalLayer(externalLayers);
   };
 
   useEffect(() => {
-    console.log("externalLayers", externalLayers);
     if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
 
