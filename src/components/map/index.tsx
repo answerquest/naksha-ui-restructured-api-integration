@@ -54,7 +54,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   const toggleExternalLayers = async () => {
-    const map = mapRef.current.getMap();
+    // const map = mapRef.current.getMap();
     const layersToRemove = _.filter(addedLayers, layer => {
       return _.find(externalLayers, l => layer.id === l.id) === undefined;
     });
@@ -73,15 +73,18 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     _.each(layersToAdd, layer => {
       toggleExternalLayer(layer.id, layer.styles, true);
     });
+
+    console.log("layersToRemove", layersToRemove);
+    console.log("layersToAdd", layersToAdd);
     console.log("addedLayers", addedLayers);
 
-    _.each(addedLayers, layer => {
-      map.setPaintProperty(
-        layer.id,
-        "raster-opacity",
-        layer.styles
-      );
-    });
+    // _.each(addedLayers, layer => {
+    //   map.setPaintProperty(
+    //     layer.id,
+    //     "raster-opacity",
+    //     layer.styles
+    //   );
+    // });
 
     // await toggleExternalLayer(
     //   externalLayers[0].id,
