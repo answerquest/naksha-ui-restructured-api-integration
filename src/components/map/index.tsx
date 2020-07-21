@@ -54,22 +54,35 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   const toggleExternalLayers = async () => {
-    // if (currentExternalLayer) {
-    //   await toggleExternalLayer(
-    //     currentExternalLayer[0].id,
-    //     currentExternalLayer[0].styles,
-    //     false
-    //   );
-    // }
+    const map = mapRef.current.getMap();
+    const layersToRemove = _.filter(addedLayers, layer => {
+      return _.find(externalLayers, l => layer.id === l.id) === undefined;
+    });
+
+    _.each(layersToRemove, layer => {
+      toggleExternalLayer(layer.id, layer.styles, false);
+      setAddedLayers(_.reject(addedLayers, l => l.id === layer.id));
+    });
+
     const layersToAdd = _.filter(externalLayers, layer => {
       return _.find(addedLayers, l => layer.id === l.id) === undefined;
     });
+
     setAddedLayers([...addedLayers, ...layersToAdd]);
 
     _.each(layersToAdd, layer => {
       toggleExternalLayer(layer.id, layer.styles, true);
     });
     console.log("addedLayers", addedLayers);
+
+    _.each(addedLayers, layer => {
+      map.setPaintProperty(
+        layer.id,
+        "raster-opacity",
+        layer.styles
+      );
+    });
+
     // await toggleExternalLayer(
     //   externalLayers[0].id,
     //   externalLayers[0].styles,
