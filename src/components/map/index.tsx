@@ -54,50 +54,21 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   const toggleExternalLayers = async () => {
-    // const map = mapRef.current.getMap();
-
-    // const layersToRemove = _.filter(addedLayers, layer => {
-    //   return _.find(externalLayers, l => layer.id === l.id) === undefined;
-    // });
     console.log("Naksha:addedLayers", addedLayers);
     await _.each(addedLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, false);
     });
 
-    // const layersToAdd = _.filter(externalLayers, layer => {
-    //   return _.find(addedLayers, l => layer.id === l.id && layer.type === l.type) === undefined;
-    // });
-
-    // setAddedLayers([...addedLayers, ...layersToAdd]);
-
     await _.each(externalLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, true);
     });
     setAddedLayers(externalLayers);
-    // console.log("layersToRemove", layersToRemove);
-    // console.log("layersToAdd", layersToAdd);
-    // console.log("addedLayers", addedLayers);
-
     console.log("Naksha:externalLayers", externalLayers);
-
-    // _.each(addedLayers, layer => {
-    //   map.setPaintProperty(
-    //     layer.id,
-    //     "raster-opacity",
-    //     layer.styles
-    //   );
-    // });
-
-    // await toggleExternalLayer(
-    //   externalLayers[0].id,
-    //   externalLayers[0].styles,
-    //   true
-    // );
-    // setCurrentExternalLayer(externalLayers);
   };
 
   useEffect(() => {
-    if (externalLayers && externalLayers.length > 0) toggleExternalLayers();
+    if ((externalLayers && externalLayers.length > 0) || addedLayers.length > 0)
+      toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
 
   useEffect(() => {
