@@ -60,7 +60,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     //   return _.find(externalLayers, l => layer.id === l.id) === undefined;
     // });
     console.log("Naksha:addedLayers", addedLayers);
-    _.each(addedLayers, layer => {
+    await _.each(addedLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, false);
     });
 
@@ -70,7 +70,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
 
     // setAddedLayers([...addedLayers, ...layersToAdd]);
 
-    _.each(externalLayers, layer => {
+    await _.each(externalLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, true);
     });
     setAddedLayers(externalLayers);
