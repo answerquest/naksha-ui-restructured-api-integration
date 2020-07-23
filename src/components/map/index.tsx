@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { emit } from "react-gbus";
 import _ from "underscore";
 import MapGL from "react-map-gl";
@@ -43,7 +43,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
   // const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
-  const [addedLayers, setAddedLayers] = useState([]);
+  // const [addedLayers, setAddedLayers] = useState([]);
 
   const onLoad = () => {
     updateWorldView();
@@ -55,28 +55,29 @@ export default function Map({ externalLayers }: { externalLayers? }) {
 
   const toggleExternalLayers = async () => {
     // const map = mapRef.current.getMap();
-    const layersToRemove = _.filter(addedLayers, layer => {
-      return _.find(externalLayers, l => layer.id === l.id) === undefined;
-    });
 
-    _.each(layersToRemove, layer => {
+    // const layersToRemove = _.filter(addedLayers, layer => {
+    //   return _.find(externalLayers, l => layer.id === l.id) === undefined;
+    // });
+
+    _.each(externalLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, false);
-      setAddedLayers(_.reject(addedLayers, l => l.id === layer.id));
     });
 
-    const layersToAdd = _.filter(externalLayers, layer => {
-      return _.find(addedLayers, l => layer.id === l.id && layer.type === l.type) === undefined;
-    });
+    // const layersToAdd = _.filter(externalLayers, layer => {
+    //   return _.find(addedLayers, l => layer.id === l.id && layer.type === l.type) === undefined;
+    // });
 
-    setAddedLayers([...addedLayers, ...layersToAdd]);
+    // setAddedLayers([...addedLayers, ...layersToAdd]);
 
-    _.each(layersToAdd, layer => {
+    _.each(externalLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, true);
     });
 
-    console.log("layersToRemove", layersToRemove);
-    console.log("layersToAdd", layersToAdd);
-    console.log("addedLayers", addedLayers);
+    // console.log("layersToRemove", layersToRemove);
+    // console.log("layersToAdd", layersToAdd);
+    // console.log("addedLayers", addedLayers);
+    console.log("Naksha:externalLayers", externalLayers);
 
     // _.each(addedLayers, layer => {
     //   map.setPaintProperty(
