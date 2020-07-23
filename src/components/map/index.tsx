@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/core";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { emit } from "react-gbus";
 import _ from "underscore";
 import MapGL from "react-map-gl";
@@ -43,7 +43,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
 
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
   // const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
-  // const [addedLayers, setAddedLayers] = useState([]);
+  const [addedLayers, setAddedLayers] = useState([]);
 
   const onLoad = () => {
     updateWorldView();
@@ -59,8 +59,8 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     // const layersToRemove = _.filter(addedLayers, layer => {
     //   return _.find(externalLayers, l => layer.id === l.id) === undefined;
     // });
-
-    _.each(externalLayers, layer => {
+    console.log("Naksha:addedLayers", addedLayers);
+    _.each(addedLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, false);
     });
 
@@ -73,10 +73,11 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     _.each(externalLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, true);
     });
-
+    setAddedLayers(externalLayers);
     // console.log("layersToRemove", layersToRemove);
     // console.log("layersToAdd", layersToAdd);
     // console.log("addedLayers", addedLayers);
+
     console.log("Naksha:externalLayers", externalLayers);
 
     // _.each(addedLayers, layer => {
