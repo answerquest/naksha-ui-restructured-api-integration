@@ -99,7 +99,8 @@ export default function useLayerManager() {
 
   const onMapHover = e => {
     let noGridFeature = true;
-
+    console.log("onMapHover", e);
+    
     e?.features?.forEach(featureRaw => {
       const feat = featureRaw.toJSON();
       if (feat.layer.id.startsWith(LAYER_PREFIX_GRID)) {
