@@ -1,4 +1,4 @@
-import { Box, Text, PseudoBox } from "@chakra-ui/core";
+import { Box, Text } from "@chakra-ui/core";
 import React, { useState, useEffect } from "react";
 import { emit } from "react-gbus";
 import _ from "underscore";
