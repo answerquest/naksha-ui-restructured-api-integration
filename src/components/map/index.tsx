@@ -1,8 +1,8 @@
-import { Box } from "@chakra-ui/core";
+import { Box, Text } from "@chakra-ui/core";
 import React, { useState, useEffect } from "react";
 import { emit } from "react-gbus";
 import _ from "underscore";
-import MapGL from "react-map-gl";
+import MapGL, { Popup } from "react-map-gl";
 
 // import useDebounce from "../../hooks/use-debounce";
 import useLayerManager from "../../hooks/use-layer-manager";
@@ -12,7 +12,7 @@ import InfoBar from "./infobar";
 import Legend from "./legend";
 import MarkersList from "./markers-list";
 import Navigation from "./navigation";
-import Popup from "./popup";
+// import Popup from "./popup";
 import Sidebar from "./sidebar";
 
 export default function Map({ externalLayers }: { externalLayers? }) {
@@ -25,17 +25,12 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     baseLayer,
     layers,
     infobarData,
-    clickPopup,
-    setClickPopup,
-    hoverPopup,
-    setHoverPopup
   } = useLayers();
   const { toggleExternalLayer } = useLayerManager();
   const {
     updateWorldView,
     reloadLayers,
     onMapClick,
-    onMapHover,
     renderHLData
   } = useLayerManager();
 
@@ -44,6 +39,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   // useListener(reloadLayers, ["STYLE_UPDATED"]);
   // const [currentExternalLayer, setCurrentExternalLayer] = useState(false);
   const [addedLayers, setAddedLayers] = useState([]);
+  const [popUp, setPopUp] = useState(null);
 
   const onLoad = () => {
     updateWorldView();
@@ -54,7 +50,6 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   const toggleExternalLayers = async () => {
-    console.log("Naksha:addedLayers", addedLayers);
     await _.each(addedLayers, layer => {
       toggleExternalLayer(layer.id, layer.styles, false);
     });
@@ -63,7 +58,6 @@ export default function Map({ externalLayers }: { externalLayers? }) {
       toggleExternalLayer(layer.id, layer.styles, true);
     });
     setAddedLayers(externalLayers);
-    console.log("Naksha:externalLayers", externalLayers);
   };
 
   useEffect(() => {
@@ -82,6 +76,47 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   useEffect(() => {
     renderHLData();
   }, [infobarData]);
+
+  const handleHover = e => {
+    var coordinates = e.features[0].geometry.coordinates.slice();
+
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+
+    if (
+      e.features[0].layer.paint["fill-color"].property &&
+      e.features[0].properties
+    ) {
+      const title = e.features[0].properties[
+        e.features[0].layer.paint["fill-color"].property
+      ]
+        .split(" ")
+        .map(s => s.charAt(0).toUpperCase() + s.slice(1))
+        .join(" ");
+      let properties = [];
+      _.each(e.features[0].properties, (p, key) => {
+        if (key !== e.features[0].layer.paint["fill-color"].property)
+          properties.push(
+            <div>
+              <span>{key}:</span>
+              {p}
+            </div>
+          );
+      });
+      setPopUp({
+        coordinates: e.lngLat,
+        title: title,
+        properties: properties
+      });
+    } else {
+      setPopUp(null);
+    }
+  };
+
   return (
     <Box size="full" position="relative">
       <MapGL
@@ -95,13 +130,26 @@ export default function Map({ externalLayers }: { externalLayers? }) {
         onViewportChange={setViewPort}
         mapboxApiAccessToken={mapboxApiAccessToken}
         onClick={onMapClick}
-        onHover={onMapHover}
+        onHover={handleHover}
       >
         <Navigation onViewportChange={setViewPort} />
         <Legend />
-        {clickPopup && <Popup data={clickPopup} set={setClickPopup} />}
+        {/* {clickPopup && <Popup data={clickPopup} set={setClickPopup} />}
         {!clickPopup && hoverPopup && (
           <Popup data={hoverPopup} set={setHoverPopup} closeButton={false} />
+        )} */}
+        {!_.isEmpty(popUp) && (
+          <Popup
+            longitude={popUp.coordinates[0]}
+            latitude={popUp.coordinates[1]}
+            closeButton={false}
+            closeOnClick={false}
+          >
+            <Box fontSize="12px">
+              <Text fontWeight="bold">{popUp.title}</Text>
+              {_.map(popUp.properties, p => p)}
+            </Box>
+          </Popup>
         )}
         <MarkersList />
       </MapGL>
