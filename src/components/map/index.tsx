@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/core";
+import { Box, Text, PseudoBox } from "@chakra-ui/core";
 import React, { useState, useEffect } from "react";
 import { emit } from "react-gbus";
 import _ from "underscore";
@@ -129,11 +129,11 @@ export default function Map({ externalLayers }: { externalLayers? }) {
             closeButton={false}
             closeOnClick={false}
           >
-            <Box fontSize="12px">
+            <Box fontSize="14px">
               <Text fontWeight="bold">{popUp.title}</Text>
               {_.map(popUp.properties, (p, key) => (
-                <Box className="pop-up-props">
-                  {key} <span>{p}</span>
+                <Box className="pop-up-props" fontSize="12px">
+                  {key} <PseudoBox fontWeight="bold">{p}</PseudoBox>
                 </Box>
               ))}
             </Box>
