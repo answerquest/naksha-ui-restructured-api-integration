@@ -24,7 +24,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
     setViewPort,
     baseLayer,
     layers,
-    infobarData,
+    infobarData
   } = useLayers();
   const { toggleExternalLayer } = useLayerManager();
   const {
@@ -78,35 +78,26 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   }, [infobarData]);
 
   const handleHover = e => {
-    if(!e.features) return setPopUp(null);
-
     if (
-      e.features[0].layer.paint["fill-color"].property &&
-      e.features[0].properties
+      e.features &&
+      e.features.length &&
+      e.features[0].layer &&
+      e.features[0].layer.id
     ) {
-      const title = e.features[0].properties[
-        e.features[0].layer.paint["fill-color"].property
-      ]
-        .split(" ")
-        .map(s => s.charAt(0).toUpperCase() + s.slice(1))
-        .join(" ");
-      let properties = [];
-      _.each(e.features[0].properties, (p, key) => {
-        if (key !== e.features[0].layer.paint["fill-color"].property)
-          properties.push(
-            <div>
-              <span>{key}:</span>
-              {p}
-            </div>
-          );
+      const extLayer = _.findWhere(externalLayers, {
+        id: e.features[0].layer.id
       });
-      setPopUp({
-        coordinates: e.lngLat,
-        title: title,
-        properties: properties
-      });
+      if (extLayer && extLayer.properties) {
+        setPopUp({
+          coordinates: e.lngLat,
+          title: extLayer.properties.title,
+          properties: extLayer.properties.values
+        });
+      } else {
+        return setPopUp(null);
+      }
     } else {
-      setPopUp(null);
+      return setPopUp(null);
     }
   };
 
@@ -140,7 +131,11 @@ export default function Map({ externalLayers }: { externalLayers? }) {
           >
             <Box fontSize="12px">
               <Text fontWeight="bold">{popUp.title}</Text>
-              {_.map(popUp.properties, p => p)}
+              {_.map(popUp.properties, (p, key) => (
+                <Box className="pop-up-props">
+                  {key} <span>{p}</span>
+                </Box>
+              ))}
             </Box>
           </Popup>
         )}
