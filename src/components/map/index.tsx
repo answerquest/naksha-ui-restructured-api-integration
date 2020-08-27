@@ -129,11 +129,13 @@ export default function Map({ externalLayers }: { externalLayers? }) {
             closeButton={false}
             closeOnClick={false}
           >
-            <Box fontSize="14px">
-              <Text fontWeight="bold">{popUp.title}</Text>
+            <Box>
+              <Text fontWeight="bold" fontSize="14px">
+                {popUp.title}
+              </Text>
               {_.map(popUp.properties, (p, key) => (
                 <Box className="pop-up-props" fontSize="12px">
-                  {key} <PseudoBox fontWeight="bold">{p}</PseudoBox>
+                  {key} <span style={{fontWeight:"bold"}}>{p}</span>
                 </Box>
               ))}
             </Box>
