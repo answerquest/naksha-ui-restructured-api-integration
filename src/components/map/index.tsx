@@ -19,6 +19,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   const {
     mapRef,
     loadToC,
+    showToC,
     mapboxApiAccessToken,
     viewPort,
     setViewPort,
@@ -164,7 +165,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
         )}
         <MarkersList />
       </MapGL>
-      {loadToC && <Sidebar />}
+      {loadToC && <Sidebar showTOC={showToC}/>}
       {infobarData.length > 0 && <InfoBar />}
     </Box>
   );

@@ -26,7 +26,7 @@ const TabContainer = styled.div`
   }
 `;
 
-export default function Sidebar() {
+export default function Sidebar({showTOC}) {
   const { ToC } = useLayers();
   const { getGeoserverLayers } = useLayerManager();
 
@@ -34,6 +34,8 @@ export default function Sidebar() {
     getGeoserverLayers();
   }, []);
 
+  if(!showTOC) return null;
+  
   return ToC.isOpen ? (
     <TabContainer>
       <CloseButton m={1} onClick={ToC.onClose} position="absolute" right="0" />
