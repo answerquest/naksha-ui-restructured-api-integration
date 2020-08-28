@@ -101,8 +101,8 @@ export default function Map({ externalLayers }: { externalLayers? }) {
         e.features.length &&
         e.features[0].properties
       ) {
-        const selectedProp = extLayer.properties[colorBy][0];
         if(!extLayer.properties[colorBy]) return setPopUp(null);
+        const selectedProp = extLayer.properties[colorBy][0];
         const popUpProps = {
           Value: selectedProp.value,
           Type: selectedProp["entity.type"]
