@@ -87,11 +87,32 @@ export default function Map({ externalLayers }: { externalLayers? }) {
       const extLayer = _.findWhere(externalLayers, {
         id: e.features[0].layer.id
       });
-      if (extLayer && extLayer.properties) {
+      const description = e.features[0].properties;
+      let colorBy = false;
+      if (_.has(description, "new_distt") || _.has(description, "st_nm")) {
+        colorBy = description.st_nm || description.new_distt;
+      }
+
+      if (
+        colorBy &&
+        extLayer &&
+        extLayer.properties &&
+        e.features &&
+        e.features.length &&
+        e.features[0].properties
+      ) {
+        const selectedProp = extLayer.properties[colorBy][0];
+        if(!extLayer.properties[colorBy]) return setPopUp(null);
+        const popUpProps = {
+          Value: selectedProp.value,
+          Type: selectedProp["entity.type"]
+        };
+        if (selectedProp["entity.type"] === "DISTRICT")
+          popUpProps['State'] = selectedProp["entity.state"];
         setPopUp({
           coordinates: e.lngLat,
-          title: extLayer.properties.title,
-          properties: extLayer.properties.values
+          title: colorBy,
+          properties: popUpProps
         });
       } else {
         return setPopUp(null);
@@ -130,12 +151,12 @@ export default function Map({ externalLayers }: { externalLayers? }) {
             closeOnClick={false}
           >
             <Box>
-              <Text fontWeight="bold" fontSize="14px">
+              <Text fontWeight="bold">
                 {popUp.title}
               </Text>
               {_.map(popUp.properties, (p, key) => (
                 <Box className="pop-up-props" fontSize="12px">
-                  {key} <span style={{fontWeight:"bold"}}>{p}</span>
+                  {key}: <span style={{ fontWeight: "bold" }}>{p}</span>
                 </Box>
               ))}
             </Box>
