@@ -423,7 +423,6 @@ export default function useLayerManager() {
    * @param {boolean} [updateBbox=true] weather to zoom to that layer once loaded or not
    */
   const toggleExternalLayer = async (id: string, styles: {}, add = true) => {
-    console.log("toggleExternalLayer - Methos")
     try {
       const layerIndex = layers.findIndex(o => o.layerTableName === styles['source-layer']);
       await toggleExternalLayerVector(id, styles, add, layerIndex);
