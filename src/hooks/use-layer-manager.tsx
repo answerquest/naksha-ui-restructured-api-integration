@@ -415,7 +415,7 @@ export default function useLayerManager() {
   };
 
   /**
-   * Toggle vector layer from external app
+   * Toggle vector layer from external app methos
    *
    * @param {string} id Layer ID
    * @param {boolean} [add=true] weather to add or remove layer
