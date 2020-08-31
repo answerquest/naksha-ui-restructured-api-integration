@@ -2,6 +2,7 @@ import { GeoserverLayer } from "interfaces/naksha";
 import React, { useEffect, useState } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
+import _ from "underscore";
 
 import { useLayers } from "../../../../hooks/use-layers";
 import Item from "./item";
@@ -11,14 +12,22 @@ export default function LayersList({ q }: { q? }) {
   const [filteredLayers, setFilteredLayers] = useState<GeoserverLayer[]>([]);
 
   useEffect(() => {
+    console.log('hiddenLayers.length', hiddenLayers.length);
+    
+    const shownLayers = hiddenLayers.length
+      ? layers.filter(l => !_.findWhere(hiddenLayers, { id: l.id }))
+      : layers;
+
     setFilteredLayers(
       q
-        ? layers.filter(l =>
-            l.layerName.toLowerCase().includes(q.toLowerCase())
+        ? shownLayers.filter(
+            l =>
+              l.layerName.toLowerCase().includes(q.toLowerCase()) &&
+              !_.findWhere(hiddenLayers, { id: l.id })
           )
-        : layers
+        : shownLayers
     );
-  }, [q, layers]);
+  }, [q, layers, hiddenLayers]);
 
   return (
     <AutoSizer>
@@ -27,7 +36,7 @@ export default function LayersList({ q }: { q? }) {
           width={p.width}
           height={p.height}
           itemCount={filteredLayers.length}
-          itemData={{ q, data: filteredLayers, hiddenLayers:hiddenLayers }}
+          itemData={{ q, data: filteredLayers }}
           itemSize={113}
         >
           {Item}
