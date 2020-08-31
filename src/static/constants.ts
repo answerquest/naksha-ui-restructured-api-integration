@@ -18,6 +18,7 @@ export const defaultNakshaProps: NakshaProps = {
   layers: [],
   selectedLayers: [],
   externalLayers: [],
+  hiddenLayers: [],
   markers: []
 };
 

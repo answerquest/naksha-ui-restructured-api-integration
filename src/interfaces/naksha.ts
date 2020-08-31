@@ -26,6 +26,10 @@ export interface ExternalLayers {
   styles: {};
 }
 
+export interface HiddenLayers {
+  id: Number;
+}
+
 export interface ExtendedMarkerProps {
   latitude: number;
   longitude: number;
@@ -50,6 +54,7 @@ export interface NakshaProps {
 
   selectedLayers?: SelectedLayers[];
   externalLayers?: ExternalLayers[];
+  hiddenLayers?: HiddenLayers[];
   baseLayer?: BaseLayer;
   layers?: GeoserverLayer[];
   markers?: ExtendedMarkerProps[];

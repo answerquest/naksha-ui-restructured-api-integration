@@ -7,7 +7,7 @@ import { useLayers } from "../../../../hooks/use-layers";
 import Item from "./item";
 
 export default function LayersList({ q }: { q? }) {
-  const { layers } = useLayers();
+  const { layers, hiddenLayers } = useLayers();
   const [filteredLayers, setFilteredLayers] = useState<GeoserverLayer[]>([]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function LayersList({ q }: { q? }) {
           width={p.width}
           height={p.height}
           itemCount={filteredLayers.length}
-          itemData={{ q, data: filteredLayers }}
+          itemData={{ q, data: filteredLayers, hiddenLayers:hiddenLayers }}
           itemSize={113}
         >
           {Item}

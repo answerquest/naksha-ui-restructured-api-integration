@@ -4,6 +4,7 @@ import React, { memo } from "react";
 import { useState } from "react";
 import Highlight from "react-highlighter";
 import { areEqual } from "react-window";
+import _ from "underscore";
 
 import {
   Drawer,
@@ -24,13 +25,13 @@ import { fadeOverflow, FALLBACK_THUMB } from "../../../../static/constants";
 import { validURL } from "../../../../utils/basic";
 
 interface ItemProps {
-  data: { q?; data: GeoserverLayer[] };
+  data: { q?; data: GeoserverLayer[]; hiddenLayers };
   index;
   style;
 }
 
 const Item = memo<ItemProps>(
-  ({ data: { q = "", data }, index, style }) => {
+  ({ data: { q = "", data, hiddenLayers }, index, style }) => {
     const { toggleLayer } = useLayerManager();
     const [isLoading, setIsLoading] = useState(false);
     const layer = data[index];
@@ -41,6 +42,11 @@ const Item = memo<ItemProps>(
       await toggleLayer(layer.layerTableName, !layer.isAdded);
       setIsLoading(false);
     };
+
+    // DO not display hidden layers
+    if (_.findWhere(hiddenLayers, { id: layer.id })) {
+      return null;
+    }
 
     return (
       <React.Fragment>

@@ -15,7 +15,8 @@ import {
   IUseDisclosure,
   NakshaProps,
   SelectedLayers,
-  ExternalLayers
+  ExternalLayers,
+  HiddenLayers,
 } from "../interfaces/naksha";
 import { defaultNakshaProps } from "../static/constants";
 
@@ -33,6 +34,7 @@ interface LayerContextProps extends NakshaProps {
   setViewPort?;
   setSelectedLayers?: (f: (draft: SelectedLayers[]) => any) => void;
   setExternalLayers?: (f: (draft: ExternalLayers[]) => any) => void;
+  setHiddenLayers?: (f: (draft: HiddenLayers[]) => any) => void;
 
   legend?;
   setLegend?;
@@ -58,6 +60,7 @@ export const LayersProvider = (props: NakshaProps) => {
 
   const [selectedLayers, setSelectedLayers] = useImmer(props.selectedLayers);
   const [externalLayers, setExternalLayers] = useImmer(props.externalLayers);
+  const [hiddenLayers, setHiddenLayers] = useImmer(props.hiddenLayers);
   const [infobarData, setInfobarData] = useState<any>([]);
   const [legend, setLegend] = useState({});
 
@@ -80,6 +83,9 @@ export const LayersProvider = (props: NakshaProps) => {
 
         externalLayers,
         setExternalLayers,
+
+        hiddenLayers,
+        setHiddenLayers,
 
         viewPort,
         setViewPort,

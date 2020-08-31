@@ -39,6 +39,7 @@ export const toStorybook = () => (
     theme={object("Theme", theme)}
     selectedLayers={object("Selected Layers", [])}
     externalLayers={object("External Layers", [])}
+    hiddenLayers={object("Hidden Layers", [])}
   />
 );
 
