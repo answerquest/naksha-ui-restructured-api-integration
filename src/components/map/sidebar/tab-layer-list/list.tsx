@@ -12,8 +12,6 @@ export default function LayersList({ q }: { q? }) {
   const [filteredLayers, setFilteredLayers] = useState<GeoserverLayer[]>([]);
 
   useEffect(() => {
-    console.log('hiddenLayers.length', hiddenLayers.length);
-    
     const shownLayers = hiddenLayers.length
       ? layers.filter(l => !_.findWhere(hiddenLayers, { id: l.id }))
       : layers;
