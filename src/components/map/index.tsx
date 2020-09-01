@@ -90,8 +90,8 @@ export default function Map({ externalLayers }: { externalLayers? }) {
       });
       const description = e.features[0].properties;
       let colorBy = false;
-      if (_.has(description, "new_distt") || _.has(description, "st_nm")) {
-        colorBy = description.st_nm || description.new_distt;
+      if (_.has(description, "new_distt") || _.has(description, "state")) {
+        colorBy = description.state || description.new_distt;
       }
 
       if (
