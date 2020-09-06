@@ -62,6 +62,8 @@ export default function Map({ externalLayers }: { externalLayers? }) {
   };
 
   useEffect(() => {
+    console.log('externalLayers', externalLayers);
+    
     if ((externalLayers && externalLayers.length > 0) || addedLayers.length > 0)
       toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
