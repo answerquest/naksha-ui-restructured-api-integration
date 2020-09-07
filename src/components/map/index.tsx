@@ -63,7 +63,6 @@ export default function Map({ externalLayers }: { externalLayers? }) {
 
   useEffect(() => {
     console.log('externalLayers', externalLayers);
-    
     if ((externalLayers && externalLayers.length > 0) || addedLayers.length > 0)
       toggleExternalLayers();
   }, [JSON.stringify(externalLayers)]);
@@ -93,7 +92,7 @@ export default function Map({ externalLayers }: { externalLayers? }) {
       const description = e.features[0].properties;
       let colorBy = false;
       if (_.has(description, "new_distt") || _.has(description, "state")) {
-        colorBy = description.state || description.new_distt;
+        colorBy = _.has(description, "new_distt") ? description.new_distt : description.state;
       }
 
       if (
