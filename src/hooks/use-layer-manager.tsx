@@ -93,6 +93,7 @@ export default function useLayerManager() {
         // NIKHIL INSERTED
         // if geoserver has onClick event defined then call it
         if (geoserver?.onClick) {
+          console.log("user-layer-manager.tsx L96: detected onClick event!", feat);
           geoserver?.onClick(feat);
         }
       } else if (feat.layer.id.startsWith(LAYER_PREFIX_GRID)) {
