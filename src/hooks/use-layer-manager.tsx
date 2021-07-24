@@ -89,6 +89,12 @@ export default function useLayerManager() {
           layer: hlLayer,
           properties: feat.properties
         });
+        
+        // NIKHIL INSERTED
+        // if geoserver has onClick event defined then call it
+        if (geoserver?.onClick) {
+          geoserver?.onClick(feat);
+        }
       } else if (feat.layer.id.startsWith(LAYER_PREFIX_GRID)) {
         onMapEventGrid(e.lngLat, feat, setClickPopup);
       }
