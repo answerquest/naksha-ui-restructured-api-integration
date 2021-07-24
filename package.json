@@ -1,6 +1,6 @@
 {
   "name": "naksha-component-react-restructured",
-  "version": "3.0.5-alpha",
+  "version": "3.1.0",
   "main": "dist/index.js",
   "module": "dist/naksha.esm.js",
   "typings": "dist/index.d.ts",
