@@ -72,7 +72,7 @@ export default function useLayerManager() {
       const feat = featureRaw.toJSON();
 
       // send back feature properties if a district or a state has been clicked
-      console.log("feat.layer.id:",feat.layer.id);
+      // console.log("feat.layer.id:",feat.layer.id);
       if(feat.layer.id.endsWith("DISTRICT") || feat.layer.id.endsWith("STATE")) {
         // if geoserver has onClick event defined then call it
         if (geoserver?.onClick) {
@@ -98,8 +98,6 @@ export default function useLayerManager() {
           layer: hlLayer,
           properties: feat.properties
         });
-        
-        
       } else if (feat.layer.id.startsWith(LAYER_PREFIX_GRID)) {
         onMapEventGrid(e.lngLat, feat, setClickPopup);
       }
